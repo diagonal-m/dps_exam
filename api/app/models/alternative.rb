@@ -19,7 +19,6 @@
 #
 class Alternative < ApplicationRecord
   validates :alternative, presence: true
-  validates :is_correct, presence: true
 
   belongs_to :question
 end

@@ -1,14 +1,21 @@
 module Mutations
   class CreateAlternative < BaseMutation
-    # TODO: define return fields
-    # field :post, Types::PostType, null: false
+    graphql_name 'CreateAlternative'
 
-    # TODO: define arguments
-    # argument :name, String, required: true
+    field :alternative, Types::AlternativeType, null: false
+    field :result, Boolean, null: true
 
-    # TODO: define resolve method
-    # def resolve(name:)
-    #   { post: ... }
-    # end
+    argument :question_id, Integer, required: true
+    argument :alternative, String, required: true
+    argument :is_correct, Boolean, required: false
+
+    def resolve(**args)
+      question = Question.find(args[:question_id])
+      alternative = question.alternatives.create!(alternative: args[:alternative], is_correct: args[:is_correct])
+      { 
+        alternative: alternative,
+        result: alternative.errors.blank? 
+      }
+    end
   end
 end
