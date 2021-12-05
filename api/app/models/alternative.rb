@@ -20,5 +20,6 @@
 class Alternative < ApplicationRecord
   validates :alternative, presence: true
 
+  has_one :description
   belongs_to :question
 end
