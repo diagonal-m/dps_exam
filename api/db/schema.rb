@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_05_081221) do
+ActiveRecord::Schema.define(version: 2021_12_05_121735) do
+
+  create_table "alternatives", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.text "alternative", null: false, comment: "選択肢"
+    t.boolean "is_correct", default: false, null: false, comment: "正解かどうか"
+    t.bigint "question_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["question_id"], name: "index_alternatives_on_question_id"
+  end
 
   create_table "questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.text "question", null: false, comment: "問題文文字列"
@@ -19,4 +28,5 @@ ActiveRecord::Schema.define(version: 2021_12_05_081221) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "alternatives", "questions"
 end
