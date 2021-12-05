@@ -10,4 +10,6 @@
 #
 class Question < ApplicationRecord
   validates :question, presence: true
+
+  has_many :alternatives, dependent: :destroy
 end
