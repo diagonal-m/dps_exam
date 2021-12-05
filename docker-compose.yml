@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  api:
+    build:
+      context: ./api/
+      dockerfile: Dockerfile
+    ports:
+      - "3333:3333"
+    volumes:
+      - ./api:/var/www/api
+      - gem_data:/usr/local/bundle
+    command: /bin/sh -c "rm -f /var/www/api/tmp/pids/server.pid && bundle exec rails s -p 3333 -b '0.0.0.0'"
+  my-database:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "1080:80"
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=my-database
+      - PMA_USER=root
+volumes:
+  gem_data:
