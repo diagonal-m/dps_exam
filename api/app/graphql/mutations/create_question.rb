@@ -1,14 +1,18 @@
 module Mutations
   class CreateQuestion < BaseMutation
-    # TODO: define return fields
-    # field :post, Types::PostType, null: false
+    graphql_name 'CreateQuestion'
 
-    # TODO: define arguments
-    # argument :name, String, required: true
+    field :question, Types::QuestionType, null: false
+    field :result, Boolean, null: true
 
-    # TODO: define resolve method
-    # def resolve(name:)
-    #   { post: ... }
-    # end
+    argument :question, String, required: true
+
+    def resolve(**args)
+      question = Question.create(question: args[:question])
+      { 
+        question: question,
+        result: question.errors.blank?
+      }
+    end
   end
 end
