@@ -7,14 +7,17 @@ module Mutations
 
     argument :question, String, required: true
     argument :alternatives, [String]
+    argument :descriptions, [String]
 
     def resolve(**args)
       question = Question.create!(question: args[:question])
-      args[:alternatives].each_with_index { |alternative, index|
-        question.alternatives.create!(
-          alternative: alternative, 
+      
+      args[:alternatives].zip(args[:descriptions]).each_with_index { |(alternative_text, description_text), index|
+        alternative = question.alternatives.create!(
+          alternative: alternative_text, 
           is_correct: index.zero?
         )
+        alternative.create_description!(description: description_text)
       }
       { 
         question: question,
