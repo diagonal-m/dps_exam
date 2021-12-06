@@ -10,5 +10,10 @@ module Types
     def alternatives
       object.alternatives
     end
+
+    field :random_alternatives, [Types::AlternativeType], null: false
+    def random_alternatives
+      object.alternatives.shuffle
+    end
   end
 end
