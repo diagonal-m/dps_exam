@@ -6,5 +6,10 @@ module Types
     field :question_id, Integer, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+
+    field :description, Types::DescriptionType, null: false
+    def description
+      object.description
+    end
   end
 end

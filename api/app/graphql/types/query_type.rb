@@ -18,5 +18,10 @@ module Types
     def question(id:)
       Question.find(id)
     end
+
+    field :setting_question, Types::QuestionType, null: false
+    def setting_question
+      Question.offset( rand(Question.count) ).first
+    end
   end
 end
