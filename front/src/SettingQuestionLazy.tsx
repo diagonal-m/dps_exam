@@ -20,33 +20,6 @@ const GET_QUESTION = gql`
   }
 `
 
-// export const SettingQuestionLazy: any = () => {
-//   const [loadQuestion, {called, loading, error, data}] = useLazyQuery(
-//     GET_QUESTION
-//   );
-//   if (called && loading) {
-//     return <h2>Loading...</h2>
-//   }
-
-//   if (!called) {
-//     return <button onClick={() => loadQuestion()}>LOAD</button>
-//   }
-
-//   if (error) {
-//     return error;
-//   }
-
-//   const question = <div>{data.settingQuestion.question}</div>
-
-//   return (
-//     <>
-//     <h2>Question</h2>
-//     <button onClick={() => loadQuestion()}>Load</button>
-//     {question}
-//     </>
-//   )
-// }
-
 const createQuestionData: any = (loading: boolean, error: ApolloError, data: any) => {
   // クエリ実行中の表示
   if (loading) return <p>Loading ...</p>;
