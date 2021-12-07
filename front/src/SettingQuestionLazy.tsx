@@ -77,7 +77,7 @@ const QuestionArea: any = (props: any) => {
         </li>
       ))}
 
-      <button onClick={onClickAnsButton}>{isAnswer ? '隠す' : '答えを見る'}</button>
+      <button onClick={onClickAnsButton}>答えを見る</button>
       {
       isAnswer ? 
       <div>
@@ -98,7 +98,7 @@ export const SettingQuestionLazy: React.FC = () => {
   return (
     <>
       <QuestionArea question={questionData}/>
-      <button onClick={() => loadQuestion()}>次の問題</button>
+      <button onClick={() => loadQuestion()}>問題</button>
     </>
   )
 }
