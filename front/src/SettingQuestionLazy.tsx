@@ -1,6 +1,7 @@
 import { useQuery, useLazyQuery, ApolloError } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useState } from "react";
+import styled from "styled-components";
 
 import { QuestionArea } from "./components/QuestionArea";
 
@@ -19,6 +20,22 @@ const GET_QUESTION = gql`
         }
       }
     }
+  }
+`
+
+const SButton = styled.button`
+  display: inline-block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background: #668ad8;/*ボタン色*/
+  color: #FFF;
+  border-bottom: solid 4px #627295;
+  border-radius: 3px;
+  cursor: pointer;
+  &:active {
+    -webkit-transform: translateY(4px);
+    transform: translateY(4px);/*下に動く*/
+    border-bottom: none;/*線を消す*/
   }
 `
 
@@ -71,7 +88,7 @@ const QuestionPage: any = (props: any) => {
     <>
       {/* 問題文 */}
       <QuestionArea question={question} />
-      <button onClick={onClickAnsButton}>答えを見る</button>
+      <SButton onClick={onClickAnsButton}>答えを見る</SButton>
       <LoadQuestionButton>次の問題</LoadQuestionButton>
       {
       isAnswer ? 
@@ -91,7 +108,7 @@ export const SettingQuestionLazy: React.FC = () => {
   const questionData = called ? createQuestionData(loading, error, data) : null;
 
   const LoadQuestionButton: any = (props: any) => {
-    return <button onClick={() => loadQuestion()}>{props.children}</button>
+    return <SButton onClick={() => loadQuestion()}>{props.children}</SButton>
   }
 
   return (
