@@ -2,6 +2,8 @@ import { useQuery, useLazyQuery, ApolloError } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useState } from "react";
 
+import { QuestionArea } from "./components/QuestionArea";
+
 const GET_QUESTION = gql`
   {
     settingQuestion{
@@ -30,9 +32,10 @@ const createQuestionData: any = (loading: boolean, error: ApolloError, data: any
   return question
 }
 
-const QuestionArea: any = (props: any) => {
+const QuestionPage: any = (props: any) => {
   const [isAnswer, setIsAnswer] = useState(false)
   const {data} = useQuery(GET_QUESTION);
+  const LoadQuestionButton = props.load_button
 
   if (props.question === null) return <div></div>
   const question = data.settingQuestion
@@ -67,17 +70,9 @@ const QuestionArea: any = (props: any) => {
   return (
     <>
       {/* 問題文 */}
-      <h2>{`問題${question.id}`}</h2>
-      <div>{question.question}</div>
-
-      {/* 選択肢 */}
-      {alternatives.map((alternative: {id: string, alternative: string}) => (
-        <li key={alternative.id}>
-          {alternative.alternative}
-        </li>
-      ))}
-
+      <QuestionArea question={question} />
       <button onClick={onClickAnsButton}>答えを見る</button>
+      <LoadQuestionButton>次の問題</LoadQuestionButton>
       {
       isAnswer ? 
       <div>
@@ -95,10 +90,14 @@ export const SettingQuestionLazy: React.FC = () => {
   const [loadQuestion, {called, loading, error, data}] = useLazyQuery(GET_QUESTION);
   const questionData = called ? createQuestionData(loading, error, data) : null;
 
+  const LoadQuestionButton: any = (props: any) => {
+    return <button onClick={() => loadQuestion()}>{props.children}</button>
+  }
+
   return (
     <>
-      <QuestionArea question={questionData}/>
-      <button onClick={() => loadQuestion()}>問題</button>
+      { data ? <></> : <LoadQuestionButton>問題</LoadQuestionButton>}
+      <QuestionPage question={questionData} load_button={LoadQuestionButton}/>
     </>
   )
 }

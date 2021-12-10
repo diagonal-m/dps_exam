@@ -1,5 +1,5 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/react-hooks"
-import { SettingQuestion } from './SettingQuestion';
+import { Title } from "./components/Title";
 import { SettingQuestionLazy } from './SettingQuestionLazy';
 
 const client: any = new ApolloClient({
@@ -11,6 +11,7 @@ const App = () => {
     return (
         <ApolloProvider client={client}>
             <div className="App">
+              <Title />
               <SettingQuestionLazy/>
             </div>
         </ApolloProvider>
