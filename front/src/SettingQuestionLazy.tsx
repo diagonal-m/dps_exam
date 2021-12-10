@@ -63,21 +63,25 @@ const QuestionPage: any = (props: any) => {
   }
 
   const GetAnswer = (props: any) => {
-    const ans = props.alts.filter((alt: any) => {
+    const aiue: Array<string> = ["あ", "い", "う", "え"];
+
+    const ansIndex = props.alts.findIndex((alt: any) => {
       return alt.isCorrect
     })
     return (
-      <div>{`正解: ${ans[0].alternative}`}</div>
+      <h3>{`正解: (${aiue[ansIndex]}) ${props.alts[ansIndex].alternative}`}</h3>
     )
   }
 
   const GetDescription = (props: any) => {
+    const aiue: Array<string> = ["あ", "い", "う", "え"];
+
     return (
       <div>
-        {props.alts.map((alt: any) => (
+        {props.alts.map((alt: any, i: number) => (
           <div key={alt.alternative.id}>
-            <div>{alt.alternative}</div>
-            <li>{alt.description.description}</li>
+            <div style={{fontWeight: "bold"}}>{`${aiue[i]}. ${alt.alternative}`}</div>
+            <p style={{marginTop: "0em"}}>{alt.description.description}</p>
           </div>
         ))}
       </div>
@@ -89,7 +93,7 @@ const QuestionPage: any = (props: any) => {
       {/* 問題文 */}
       <QuestionArea question={question} />
       <SButton onClick={onClickAnsButton}>答えを見る</SButton>
-      <LoadQuestionButton>次の問題</LoadQuestionButton>
+      <LoadQuestionButton isAns={isAnswer} isSetAns={setIsAnswer}>次の問題</LoadQuestionButton>
       {
       isAnswer ? 
       <div>
@@ -108,7 +112,14 @@ export const SettingQuestionLazy: React.FC = () => {
   const questionData = called ? createQuestionData(loading, error, data) : null;
 
   const LoadQuestionButton: any = (props: any) => {
-    return <SButton onClick={() => loadQuestion()}>{props.children}</SButton>
+    const isAnswer = props.isAns
+    const isSetAnswer = props.isSetAns
+
+    const ansOff: any = () => {
+      if (isAnswer) {isSetAnswer(false)}
+    }
+
+    return <SButton onClick={() => {loadQuestion(); ansOff();}}>{props.children}</SButton>
   }
 
   return (
