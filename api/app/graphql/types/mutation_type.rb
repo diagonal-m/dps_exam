@@ -1,5 +1,6 @@
 module Types
   class MutationType < Types::BaseObject
+    field :submit_correct, mutation: Mutations::SubmitCorrect
     field :create_alternative, mutation: Mutations::CreateAlternative
     field :create_question, mutation: Mutations::CreateQuestion
     # TODO: remove me
