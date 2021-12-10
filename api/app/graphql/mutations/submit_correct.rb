@@ -1,14 +1,16 @@
 module Mutations
   class SubmitCorrect < BaseMutation
-    # TODO: define return fields
-    # field :post, Types::PostType, null: false
+    field :consecutive, Integer, null: false
 
-    # TODO: define arguments
-    # argument :name, String, required: true
+    argument :id, Integer, required: true
 
-    # TODO: define resolve method
-    # def resolve(name:)
-    #   { post: ... }
-    # end
+    def resolve(**args)
+      question = Question.find(args[:id].to_i)
+      consecutive = question.consecutive
+      question.update!(consecutive: consecutive + 1)
+      {
+        consecutive: question.consecutive
+      }
+    end
   end
 end
