@@ -1,4 +1,4 @@
-import { useQuery, useLazyQuery, ApolloError } from "@apollo/react-hooks";
+import { useQuery, useLazyQuery, useMutation, ApolloError } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useState } from "react";
 import styled from "styled-components";
@@ -10,6 +10,7 @@ const GET_QUESTION = gql`
     settingQuestion{
       id
       question
+      consecutive
       randomAlternatives{
         id
         alternative
@@ -21,6 +22,21 @@ const GET_QUESTION = gql`
       }
     }
   }
+`
+const SUBMIT_CORRECT = gql`
+    mutation submitCorrect($id: Int!) {
+      submitCorrect(input: {id: $id}) {
+        consecutive
+      }
+    }
+`
+
+const SUBMIT_IN_CORRECT = gql`
+    mutation submitInCorrect($id: Int!) {
+      submitInCorrect(input: {id: $id}) {
+        consecutive
+      }
+    }
 `
 
 const SButton = styled.button`
@@ -52,11 +68,18 @@ const createQuestionData: any = (loading: boolean, error: ApolloError, data: any
 const QuestionPage: any = (props: any) => {
   const [isAnswer, setIsAnswer] = useState(false)
   const {data} = useQuery(GET_QUESTION);
+  const [submitCurrect] = useMutation(SUBMIT_CORRECT);
+  const [submitInCurrect] = useMutation(SUBMIT_IN_CORRECT);
   const LoadQuestionButton = props.load_button
+  const loadQuestion = props.load_question
 
   if (props.question === null) return <div></div>
   const question = data.settingQuestion
   const alternatives = question.randomAlternatives
+
+  const ansOff: any = () => {
+    if (isAnswer) {setIsAnswer(false)}
+  }
 
   const onClickAnsButton = () => {
     setIsAnswer(!isAnswer)
@@ -94,6 +117,12 @@ const QuestionPage: any = (props: any) => {
       <QuestionArea question={question} />
       <SButton onClick={onClickAnsButton}>答えを見る</SButton>
       <LoadQuestionButton isAns={isAnswer} isSetAns={setIsAnswer}>次の問題</LoadQuestionButton>
+      <SButton onClick={
+        () => {submitCurrect({variables: {id: Number(question.id)}}); loadQuestion(); ansOff()}
+        }>正解</SButton>
+      <SButton onClick={
+        () => {submitInCurrect({variables: {id: Number(question.id)}}); loadQuestion(); ansOff()}
+        }>不正解</SButton>
       {
       isAnswer ? 
       <div>
@@ -125,7 +154,7 @@ export const SettingQuestionLazy: React.FC = () => {
   return (
     <>
       { data ? <></> : <LoadQuestionButton>問題</LoadQuestionButton>}
-      <QuestionPage question={questionData} load_button={LoadQuestionButton}/>
+      <QuestionPage question={questionData} load_button={LoadQuestionButton} load_question={loadQuestion}/>
     </>
   )
 }

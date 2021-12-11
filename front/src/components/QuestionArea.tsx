@@ -6,6 +6,7 @@ export const QuestionArea = (props: any) => {
   return (
     <div style={{padding: "0.5em 1em", margin: "2em 0", border: "double 5px #4ec4d3", marginBottom: "0.5em"}}>
       <h2>{question.question}</h2>
+      <p>{`${question.consecutive} 回連続正解中`}</p>
       {alternatives.map((alternative: {id: string, alternative: string}, i: number) => (
 
           <li style={{listStyle: "none"}} key={alternative.id}>
