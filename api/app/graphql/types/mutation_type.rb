@@ -1,5 +1,6 @@
 module Types
   class MutationType < Types::BaseObject
+    field :export_csv, mutation: Mutations::ExportCsv
     field :submit_in_correct, mutation: Mutations::SubmitInCorrect
     field :submit_correct, mutation: Mutations::SubmitCorrect
     field :create_alternative, mutation: Mutations::CreateAlternative
